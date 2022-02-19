@@ -1,0 +1,8 @@
+﻿@model Site.Models.PageModels.CartPageModel
+@{
+    ViewData["Title"] = "Cart";
+}
+@foreach (var item in Model.CartItems)
+{
+    <p>@item.Description</p>
+}

@@ -1,0 +1,70 @@
+﻿@model EntryPageModel
+
+@{ 
+    ViewData["Title"] = "Entry Page";
+}
+<div>
+    <div class="container">
+        <h5 class="text-center">@Model.Entry.EntryName</h5><h6>@Model.Entry.CategoryName</h6>
+    </div>
+    <p class="text-justify">@Model.Entry.EntryContent</p>
+    <br />
+    <br />
+
+    <div class="container">
+        <div class="row">
+            @{ 
+                using (Html.BeginForm("AddComment", "Home", FormMethod.Post))
+                {
+                     <div class="col-md-4">
+                         @Html.TextAreaFor(x => x.Comment, new { placeholder = "Make Comment" })
+                     </div>
+                     <div class="col-md-4">
+                         <button type="submit" class="btn btn-dark">Add Comment</button>
+                     </div>
+                }
+            }
+        </div>
+    </div>
+    <div class="container" style="margin-top:15px;">
+        <div class="row">
+            <div class="col-3">
+                @{
+                    string yorumsayısı = Model.Comments.Count.ToString() + " Yorum";
+                    <h5 class="text-capitalize">@yorumsayısı</h5>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        @{ 
+            foreach (var item in Model.Comments)
+            {
+                <div class="row justify-content-between" style="margin-top:10px">
+                    <div class="col-4">
+                        <p style="margin-bottom:0px;font-weight:bold">@item.User.UserName</p>
+                    </div>
+                    @{ 
+                        if (Context.Request.Cookies.Any(x=>x.Key=="User"))
+                        {
+                            var userıd = Newtonsoft.Json.JsonConvert.DeserializeObject<Site.Models.Resources.UserDto>(Context.Request.Cookies["User"]).UserId;
+                            if (userıd==item.User.UserId)
+                            {
+                                <div class="col-4">
+                                    <a href="/Home/DeleteComment/@item.CommentId" class="btn btn-danger">
+                                        <p class="text-white" style="margin:0px">Delete Comment</p>
+                                    </a>
+                                </div>
+                            }
+                        }
+                    }
+                </div>
+                <div class="row" style="margin:5px">
+                    <div class="col-12" style="padding-left:0px">
+                        <p>@item.CommentContent</p>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

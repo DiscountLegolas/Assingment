@@ -1,0 +1,49 @@
+﻿@model SignInUpModel
+@{
+    ViewData["Title"] = "Sign In Up Page";
+}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            @{
+                using (Html.BeginForm("SignIn", "User", FormMethod.Post))
+                {
+                    <div class="card bg-transparent" id="signin">
+                        <div class="card-header"><h5 class="card-title text-truncate">Sign In</h5></div>
+                        <div class="card-body">
+                            @Html.TextBoxFor(x => x.SignInUserName, new { placeholder = "Enter User Name" })
+                            <br />
+                            <br />
+                            @Html.TextBoxFor(x => x.SignInPassword, new { placeholder = "Enter Password" })
+                            <br />
+                            <br />
+                            <button type="submit" class="btn btn-primary">Sign In</button>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <div class="col">
+            @{
+                using (Html.BeginForm("SignUp", "User", FormMethod.Post))
+                {
+                    <div class="card bg-transparent" id="signup">
+                        <div class="card-header"><h5 class="card-title">Sign Up</h5></div>
+                        <div class="card-body">
+                            @Html.TextBoxFor(x => x.SignUpUserName, new { placeholder = "New User User Name" })
+                            <br />
+                            <br />
+                            @Html.TextBoxFor(x => x.SignUpEMail, new { placeholder = "New User E-Mail" })
+                            <br />
+                            <br />
+                            @Html.TextBoxFor(x => x.SignUpPassword, new { placeholder = "New User E-Mail" })
+                            <br />
+                            <br />
+                            <button type="submit" class="btn btn-primary">Sign Up</button>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
