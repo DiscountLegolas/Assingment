@@ -8,8 +8,8 @@ namespace Site.Models.PageModels
 {
     public class CartPageModel
     {
-        public List<ShopItem> CartItems { get; set; }
-        public CartPageModel(List<ShopItem> cartıtems)
+        public List<CartItem> CartItems { get; set; }
+        public CartPageModel(List<CartItem> cartıtems)
         {
             CartItems = cartıtems;
         }

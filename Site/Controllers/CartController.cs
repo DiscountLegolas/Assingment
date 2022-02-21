@@ -29,24 +29,53 @@ namespace Site.Controllers
         [Route("AddToCart/{itemid}")]
         public IActionResult AddToCart(int itemid)
         {
+            List<CartItem> cart=new List<CartItem>();
+            Console.WriteLine(itemid);
             if (Request.Cookies.Any(x=>x.Key=="Cart"))
             {
-                List<ShopItem> cart = JsonConvert.DeserializeObject<List<ShopItem>>(Request.Cookies["Cart"]);
-                cart.Add(AllShopItems.GetAllShopItems().First(x => x.Id == itemid));
+                cart = JsonConvert.DeserializeObject<List<CartItem>>(Request.Cookies["Cart"]);
+                if(cart.Any(x=>x.Item.Id==itemid))
+                {
+                    cart.Single(x=>x.Item.Id==itemid).Count++;
+                }
+                else
+                {
+                    CartItem cartItem=new CartItem(){Item=AllShopItems.GetAllShopItems().First(x => x.Id == itemid),Count=1};
+                    cart.Add(cartItem);
+                }
+                Response.Cookies.Delete("Cart");
             }
             else
             {
-                List<ShopItem> cart = new List<ShopItem>();
-                cart.Add(AllShopItems.GetAllShopItems().First(x => x.Id == itemid));
-                CookieOptions options = new CookieOptions() { Expires = DateTime.Now.AddDays(2) };
-                Response.Cookies.Append("Cart", JsonConvert.SerializeObject(cart), options);
+                CartItem cartItem=new CartItem(){Item=AllShopItems.GetAllShopItems().First(x => x.Id == itemid),Count=1};
+                cart.Add(cartItem);
             }
+            CookieOptions options = new CookieOptions() { Expires = DateTime.Now.AddDays(2) };
+            Response.Cookies.Append("Cart", JsonConvert.SerializeObject(cart), options);
+            return RedirectToAction("Cart");
+        }
+        [Authorize]
+        [Route("DeleteItem/{itemid}")]
+        public IActionResult DeleteItem(int itemid)
+        {
+            List<CartItem> cart = JsonConvert.DeserializeObject<List<CartItem>>(Request.Cookies["Cart"]);
+            if(cart.Single(x=>x.Item.Id==itemid).Count<2)
+            {
+                cart.Remove(cart.Single(x=>x.Item.Id==itemid));
+            }
+            else
+            {
+                cart.Single(x=>x.Item.Id==itemid).Count--;
+            }
+            Response.Cookies.Delete("Cart");
+            CookieOptions options = new CookieOptions() { Expires = DateTime.Now.AddDays(2) };
+            Response.Cookies.Append("Cart", JsonConvert.SerializeObject(cart), options);
             return RedirectToAction("Cart");
         }
         [Authorize]
         public IActionResult Cart()
         {
-            List<ShopItem> cart = JsonConvert.DeserializeObject<List<ShopItem>>(Request.Cookies["Cart"]);
+            List<CartItem> cart = JsonConvert.DeserializeObject<List<CartItem>>(Request.Cookies["Cart"]);
             CartPageModel model = new CartPageModel(cart);
             return View(model);
         }

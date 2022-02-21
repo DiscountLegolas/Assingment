@@ -11,7 +11,7 @@ namespace Site.Models
         public static List<ShopItem> GetAllShopItems()
         {
             List<ShopItem> shopItems = new List<ShopItem>();
-            shopItems.Add(new ShopItem() { Name = "Example", Description = "DescriptionlongtextDescriptionlongtext", Price = 45, ImageSource = "https://thumbs.dreamstime.com/b/blue-shoes-29507491.jpg" });
+            shopItems.Add(new ShopItem() {Id=1, Name = "Example", Description = "DescriptionlongtextDescriptionlongtext", Price = 45, ImageSource = "https://thumbs.dreamstime.com/b/blue-shoes-29507491.jpg" });
             return shopItems;
         }
     }

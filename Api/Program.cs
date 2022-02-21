@@ -24,7 +24,7 @@ namespace Api
             .UseServiceProviderFactory(new AutofacServiceProviderFactory())
             .ConfigureContainer<ContainerBuilder>(builder =>
             {
-                builder.RegisterModule(new DependenyInjectionModülü());
+                builder.RegisterModule(new DependenyInjectionModÃ¼lÃ¼());
             })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
